@@ -93,7 +93,7 @@ Afterward, report commands run, files changed, and any errors.
 
 Use this with the stronger model in your browser:
 
-```text
+````text
 You are my coding planner. I will use a weak IDE model as executor.
 
 Diagnose the issue and give me exact copy-paste instructions for the IDE executor.
@@ -110,7 +110,7 @@ SEND TO FLASH LOW:
 ```
 WHAT TO PASTE BACK:
 ...
-```
+````
 
 ---
 
@@ -209,7 +209,7 @@ AGENT_WORKFLOW.md
 
 Suggested contents:
 
-```markdown
+````markdown
 # Agent Workflow
 
 This project uses a planner/executor workflow.
@@ -217,6 +217,7 @@ This project uses a planner/executor workflow.
 ## Flash Low role
 
 Flash Low may:
+
 - run commands
 - inspect files
 - search code
@@ -225,6 +226,7 @@ Flash Low may:
 - summarize errors
 
 Flash Low may not:
+
 - redesign architecture
 - choose new dependencies
 - perform broad refactors
@@ -249,7 +251,7 @@ FILES CHANGED:
 
 BLOCKED ON:
 - ...
-```
+````
 
 Then tell Antigravity:
 
@@ -263,7 +265,7 @@ Read AGENT_WORKFLOW.md and follow it for this session.
 
 Ask Flash Low to return this format whenever possible:
 
-```text
+````text
 COMMANDS RUN:
 - ...
 
@@ -283,7 +285,7 @@ ERROR OUTPUT:
 
 NEXT STEP NEEDED:
 - ...
-```
+````
 
 Structured output makes it easy to paste results back into the browser model.
 
