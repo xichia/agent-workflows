@@ -4,7 +4,7 @@ This project uses a planner/executor workflow for AI-assisted development. The g
 
 ## Model roles
 
-- **Browser planner model**: GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or another high-intelligence frontier model available on your current mid-tier subscription. Use this model for architecture, debugging strategy, dependency decisions, security/performance tradeoffs, and review.
+- **Browser planner model**: GPT-5.5 High Intelligence, Claude Opus 4.8 Max Effort, or another high-intelligence frontier model available on your current mid-tier subscription. Use this model for architecture, debugging strategy, dependency decisions, security/performance tradeoffs, and review.
 - **IDE executor model**: Gemini 3.5 Flash (Low) in Antigravity, or a comparable low-cost IDE model. Use this model for terminal/file tasks and clear reporting.
 
 ## Executor role

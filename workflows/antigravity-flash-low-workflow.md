@@ -2,7 +2,7 @@
 
 This workflow keeps Antigravity IDE quota use low by splitting coding work into two roles:
 
-- **Browser planner model**: a high-intelligence frontier model running outside the IDE, such as GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or whatever the strongest planning/reasoning model is available on your current mid-tier subscription. Use this model as planner, debugger, architect, and reviewer.
+- **Browser planner model**: a high-intelligence frontier model running outside the IDE, such as GPT-5.5 High Intelligence, Claude Opus 4.8 Max Effort, or whatever the strongest planning/reasoning model is available on your current mid-tier subscription. Use this model as planner, debugger, architect, and reviewer.
 - **Gemini 3.5 Flash (Low) in Antigravity**: the IDE executor for terminal/file tasks and small mechanical edits.
 
 The goal is to make Gemini 3.5 Flash (Low) do cheap, bounded IDE work while the browser planner model handles judgment-heavy reasoning.
@@ -86,7 +86,7 @@ Afterward, report commands run, files changed, and any errors.
 
 ## Browser Planner Prompt
 
-Use this with the stronger model in your browser, for example GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or the strongest frontier-tier model available on your current subscription:
+Use this with the stronger model in your browser, for example GPT-5.5 High Intelligence, Claude Opus 4.8 Max Effort, or the strongest frontier-tier model available on your current subscription:
 
 ````text
 You are my coding planner.
@@ -210,7 +210,7 @@ This project uses a planner/executor workflow.
 
 ## Model roles
 
-- Browser planner model: GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or another high-intelligence frontier model available on your current mid-tier subscription.
+- Browser planner model: GPT-5.5 High Intelligence, Claude Opus 4.8 Max Effort, or another high-intelligence frontier model available on your current mid-tier subscription.
 - IDE executor model: Gemini 3.5 Flash (Low) in Antigravity, or a comparable low-cost IDE model.
 
 ## Gemini 3.5 Flash (Low) role

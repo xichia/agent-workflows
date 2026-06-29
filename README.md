@@ -6,7 +6,7 @@ This repository collects practical workflows for using AI coding tools safely an
 
 In this workflow:
 
-- **Browser planner model** means a high-intelligence frontier model running outside the IDE, such as GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or whatever the strongest planning/reasoning model is available on your current mid-tier subscription.
+- **Browser planner model** means a high-intelligence frontier model running outside the IDE, such as GPT-5.5 High Intelligence, Claude Opus 4.8 Max Effort, or whatever the strongest planning/reasoning model is available on your current mid-tier subscription.
 - **IDE executor model** means Gemini 3.5 Flash (Low) running in the Antigravity IDE, or a comparable low-cost/low-effort IDE model used for mechanical execution.
 
 ## Workflows
