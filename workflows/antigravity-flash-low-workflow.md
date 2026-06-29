@@ -1,4 +1,4 @@
-# Gemini 3.5 Flash (Low) Antigravity Planner/Executor Workflow
+# Gemini 3.5 Flash (Low) in Antigravity: IDE Executor Workflow
 
 This workflow keeps Antigravity IDE quota use low by splitting coding work into two roles:
 

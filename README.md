@@ -1,4 +1,4 @@
-# Agent Workflows
+# AI Agent Workflows: Frontier Planner, IDE Executor
 
 Reusable AI-assisted development workflows, prompts, and operating patterns.
 
@@ -11,7 +11,7 @@ In this workflow:
 
 ## Workflows
 
-- [Gemini 3.5 Flash (Low) Antigravity Planner/Executor Workflow](workflows/antigravity-flash-low-workflow.md)
+- [Gemini 3.5 Flash (Low) in Antigravity: IDE Executor Workflow](workflows/antigravity-flash-low-workflow.md)
 
 ## Templates
 

@@ -1,4 +1,4 @@
-# Agent Workflow
+# Project Agent Workflow: Frontier Planner, IDE Executor
 
 This project uses a planner/executor workflow for AI-assisted development. The goal is to keep IDE-agent work bounded, mechanical, and easy to review.
 
