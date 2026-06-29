@@ -1,8 +1,11 @@
 # Agent Workflow
 
-This project uses a planner/executor workflow for AI-assisted development.
+This project uses a planner/executor workflow for AI-assisted development. The goal is to keep IDE-agent work bounded, mechanical, and easy to review.
 
-The goal is to keep IDE-agent work bounded, mechanical, and easy to review. A stronger planner model handles architecture, debugging strategy, dependency decisions, and review. The IDE executor handles terminal/file tasks and reports results clearly.
+## Model roles
+
+- **Browser planner model**: GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or another high-intelligence frontier model available on your current mid-tier subscription. Use this model for architecture, debugging strategy, dependency decisions, security/performance tradeoffs, and review.
+- **IDE executor model**: Gemini 3.5 Flash (Low) in Antigravity, or a comparable low-cost IDE model. Use this model for terminal/file tasks and clear reporting.
 
 ## Executor role
 
@@ -75,8 +78,8 @@ Stop and report instead of guessing when:
 - a requested edit conflicts with existing design
 - authentication, permissions, or credentials are involved
 
-Use the stronger planner model for diagnosis, architecture, security, performance tradeoffs, or multi-step design decisions.
+Use the browser planner model for diagnosis, architecture, security, performance tradeoffs, or multi-step design decisions.
 
 ## One-line rule
 
-Browser model thinks. IDE executor acts.
+Browser planner thinks. Gemini 3.5 Flash (Low) executes.

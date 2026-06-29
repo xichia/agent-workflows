@@ -1,17 +1,17 @@
-# Antigravity Flash Low Planner/Executor Workflow
+# Gemini 3.5 Flash (Low) Antigravity Planner/Executor Workflow
 
 This workflow keeps Antigravity IDE quota use low by splitting coding work into two roles:
 
-- **Higher-thinking browser model**: planner, debugger, architect, reviewer
-- **Antigravity Flash Low**: terminal/file executor for small mechanical tasks
+- **Browser planner model**: a high-intelligence frontier model running outside the IDE, such as GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or whatever the strongest planning/reasoning model is available on your current mid-tier subscription. Use this model as planner, debugger, architect, and reviewer.
+- **Gemini 3.5 Flash (Low) in Antigravity**: the IDE executor for terminal/file tasks and small mechanical edits.
 
-The goal is to make Flash Low do cheap, bounded IDE work while the stronger model handles judgment-heavy reasoning.
+The goal is to make Gemini 3.5 Flash (Low) do cheap, bounded IDE work while the browser planner model handles judgment-heavy reasoning.
 
 ---
 
 ## Core Principle
 
-Use **Flash Low** as the default IDE model when the task is mechanical:
+Use **Gemini 3.5 Flash (Low)** as the default Antigravity IDE model when the task is mechanical:
 
 - Run commands
 - Inspect files
@@ -20,7 +20,7 @@ Use **Flash Low** as the default IDE model when the task is mechanical:
 - Run tests and linters
 - Report errors and changed files
 
-Use the **browser model** for:
+Use the **browser planner model** for:
 
 - Debugging strategy
 - Architecture
@@ -35,27 +35,26 @@ Use the **browser model** for:
 ## Recommended Loop
 
 ```text
-Flash Low gathers facts
-→ Browser model reasons
-→ Browser model writes exact executor prompt
-→ Flash Low executes
-→ Flash Low reports output
-→ Browser model reviews
+Gemini 3.5 Flash (Low) gathers facts
+→ Browser planner model reasons
+→ Browser planner model writes exact executor prompt
+→ Gemini 3.5 Flash (Low) executes
+→ Gemini 3.5 Flash (Low) reports output
+→ Browser planner model reviews
 ```
 
-Do not ask Flash Low to “figure it out” unless the task is simple. Treat it like a junior terminal assistant.
+Do not ask Gemini 3.5 Flash (Low) to “figure it out” unless the task is simple. Treat it like a junior terminal assistant.
 
 ---
 
-## Flash Low Session Prompt
+## Gemini 3.5 Flash (Low) Session Prompt
 
 Paste this at the start of an Antigravity session:
 
 ```text
-You are my low-cost IDE executor.
+You are my low-cost IDE executor running as Gemini 3.5 Flash (Low) in Antigravity.
 
 Your role is to run commands, inspect files, apply exact edits, run tests, and report results.
-
 Do not design architecture, choose dependencies, refactor broadly, or invent solutions unless explicitly asked.
 
 When blocked or when a command fails, stop and report:
@@ -67,21 +66,17 @@ FILES CHANGED:
 BLOCKED ON:
 
 Ask before destructive actions: rm -rf, git reset --hard, deploys, migrations, credential changes, or major dependency upgrades.
-
 Keep responses short.
 ```
 
 ---
 
-## Flash Low Task Prompt
+## Gemini 3.5 Flash (Low) Task Prompt
 
 Use this for each small IDE task:
 
 ```text
-Do this mechanical task only:
-
-[task]
-
+Do this mechanical task only: [task]
 Do not fix anything else.
 Do not make architectural decisions.
 Afterward, report commands run, files changed, and any errors.
@@ -91,20 +86,18 @@ Afterward, report commands run, files changed, and any errors.
 
 ## Browser Planner Prompt
 
-Use this with the stronger model in your browser:
+Use this with the stronger model in your browser, for example GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or the strongest frontier-tier model available on your current subscription:
 
 ````text
-You are my coding planner. I will use a weak IDE model as executor.
-
+You are my coding planner.
+I will use Gemini 3.5 Flash (Low) in the Antigravity IDE as the executor.
 Diagnose the issue and give me exact copy-paste instructions for the IDE executor.
-
 Make the task small, mechanical, and safe.
 
 Output:
-
 DIAGNOSIS:
 PLAN:
-SEND TO FLASH LOW:
+SEND TO GEMINI 3.5 FLASH (LOW):
 ```text
 ...
 ```
@@ -114,7 +107,7 @@ WHAT TO PASTE BACK:
 
 ---
 
-## Good Flash Low Tasks
+## Good Gemini 3.5 Flash (Low) Tasks
 
 ```text
 Run git status --short and npm test. Do not modify files.
@@ -138,7 +131,7 @@ Run the linter and report only the files with errors.
 
 ---
 
-## Bad Flash Low Tasks
+## Bad Gemini 3.5 Flash (Low) Tasks
 
 Avoid prompts like:
 
@@ -175,13 +168,13 @@ Do not modify files.
 Report only failing tests, stack traces, and relevant file paths.
 ```
 
-Then paste the result into the browser model and ask it to diagnose.
+Then paste the result into the browser planner model and ask it to diagnose.
 
 ---
 
 ## Exact Executor Prompt Pattern
 
-After the browser model diagnoses the issue, ask it to produce something like this:
+After the browser planner model diagnoses the issue, ask it to produce something like this:
 
 ```text
 Open src/api/users.ts.
@@ -192,10 +185,11 @@ Make only this change:
 Then run:
 npm test -- src/api/users.test.ts
 
-If it fails, paste the full error output. Do not make further edits.
+If it fails, paste the full error output.
+Do not make further edits.
 ```
 
-This is ideal for Flash Low because the task is specific, bounded, and testable.
+This is ideal for Gemini 3.5 Flash (Low) because the task is specific, bounded, and testable.
 
 ---
 
@@ -214,9 +208,14 @@ Suggested contents:
 
 This project uses a planner/executor workflow.
 
-## Flash Low role
+## Model roles
 
-Flash Low may:
+- Browser planner model: GPT-5.5 High Intelligence, Claude Opus 4.8 Max effort, or another high-intelligence frontier model available on your current mid-tier subscription.
+- IDE executor model: Gemini 3.5 Flash (Low) in Antigravity, or a comparable low-cost IDE model.
+
+## Gemini 3.5 Flash (Low) role
+
+Gemini 3.5 Flash (Low) may:
 
 - run commands
 - inspect files
@@ -225,7 +224,7 @@ Flash Low may:
 - run tests
 - summarize errors
 
-Flash Low may not:
+Gemini 3.5 Flash (Low) may not:
 
 - redesign architecture
 - choose new dependencies
@@ -263,7 +262,7 @@ Read AGENT_WORKFLOW.md and follow it for this session.
 
 ## Structured Output Format
 
-Ask Flash Low to return this format whenever possible:
+Ask Gemini 3.5 Flash (Low) to return this format whenever possible:
 
 ````text
 COMMANDS RUN:
@@ -287,7 +286,7 @@ NEXT STEP NEEDED:
 - ...
 ````
 
-Structured output makes it easy to paste results back into the browser model.
+Structured output makes it easy to paste results back into the browser planner model.
 
 ---
 
@@ -296,13 +295,13 @@ Structured output makes it easy to paste results back into the browser model.
 Recommended model escalation:
 
 ```text
-Attempt 1: Flash Low
-Attempt 2: Flash Low with more exact instructions
-Attempt 3: Flash Medium
-Planning/debugging/architecture: browser model
+Attempt 1: Gemini 3.5 Flash (Low)
+Attempt 2: Gemini 3.5 Flash (Low) with more exact instructions
+Attempt 3: Gemini 3.5 Flash (Medium), or the next smarter Antigravity IDE executor model
+Planning/debugging/architecture: browser planner model
 ```
 
-Escalate from **Flash Low** to **Flash Medium** when:
+Escalate from **Gemini 3.5 Flash (Low)** to **Gemini 3.5 Flash (Medium)**, or the next smarter Antigravity IDE executor model, when:
 
 - It cannot find the right file
 - It misreads a long error log
@@ -316,16 +315,14 @@ Do not escalate just because you are impatient. Most quota is wasted on vague pr
 
 ## Recommended Default Setup
 
-Use **Flash Low** as the default Antigravity IDE model.
+Use **Gemini 3.5 Flash (Low)** as the default Antigravity IDE model. Use **Gemini 3.5 Flash (Medium)**, or the next smarter Antigravity IDE executor model, only when the task still belongs in the IDE but needs mild interpretation.
 
-Use **Flash Medium** only as a smarter executor when the task still belongs in the IDE but needs mild interpretation.
-
-Use the browser model for everything involving judgment, strategy, debugging, design, or multi-step planning.
+Use the browser planner model for everything involving judgment, strategy, debugging, design, or multi-step planning.
 
 ---
 
 ## One-Line Rule
 
 ```text
-Browser model thinks. Flash Low executes.
+Browser planner thinks. Gemini 3.5 Flash (Low) executes.
 ```
