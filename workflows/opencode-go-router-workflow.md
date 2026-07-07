@@ -23,18 +23,22 @@ Planning and review agents stay read-only. Editing agents ask before edits and w
 | **Reviewer Alternate** | DeepSeek V4 Pro | Optional debugging-heavy final review, failing-test follow-up review, or second review | No edits |
 | **Docs / Cleanup** | MiniMax M3 | README, examples, comments, changelog notes, cleanup docs | Ask before edits |
 
-Model labels can change. Before committing this setup, run `/models` in OpenCode and replace model IDs below with the exact IDs available under your OpenCode Go subscription.
+The config below uses one active model per agent. Where a role has an alternate model, define a separate named alternate agent instead of trying to put multiple models into one `model` field.
 
-This workflow uses one active model per agent. Where a role says “GLM 5.2 or Qwen3.7 Max” or “Qwen3.7 Plus or DeepSeek V4 Pro,” define separate named alternate agents instead of trying to put multiple models into one `model` field.
+If OpenCode later reports that one of these model IDs is unavailable, run `/models` inside OpenCode and update only the affected `model` value in `opencode.json`.
 
 ---
 
-## Target Project Layout
+## Setup
 
-Use the existing `opencode.json` + prompt-file layout:
+### 1. Choose Project or Global Setup
+
+Use a **project setup** when the router should travel with one repository and be committed with that project. Put `opencode.json` and `prompts/` in the project root.
+
+Use a **global setup** when you want the same router agents available across many repositories. Put the config and prompts under your OpenCode config directory:
 
 ```text
-your-project/
+~/.config/opencode/
   opencode.json
   prompts/
     manager.md
@@ -45,35 +49,17 @@ your-project/
     fixer.md
     reviewer.md
     docs.md
-  src/ or app/
 ```
 
-Keep project-specific coding rules in `AGENTS.md` if needed. Keep OpenCode router prompts in `prompts/` so `opencode.json` can reference them with `{file:./prompts/name.md}`.
+Project setup is recommended for shared team workflows. Global setup is useful for personal defaults.
 
----
+### 2. Add or Merge the Config
 
-## Setup
+For a project setup, create or merge this into `opencode.json` at the project root.
 
-### 1. Connect OpenCode Go
+For a global setup, create or merge this into `~/.config/opencode/opencode.json`.
 
-From the target project root, start OpenCode:
-
-```bash
-opencode
-```
-
-Connect your OpenCode Go provider if needed, then list available models:
-
-```text
-/connect
-/models
-```
-
-Copy the exact model IDs for the roles in the mapping table.
-
-### 2. Add the project config
-
-Create or replace `opencode.json` at the project root:
+Do not blindly replace an existing config. Preserve existing provider, theme, command, plugin, or project-specific settings unless you intentionally want to remove them.
 
 ```json
 {
@@ -498,9 +484,11 @@ Create or replace `opencode.json` at the project root:
 
 Important: keep the `"*": "ask"` bash rule before the more specific `allow`/`deny` rules. OpenCode permission patterns are order-sensitive; later matching rules win.
 
-### 3. Add the prompt files
+### 3. Add the Prompt Files
 
-Create `prompts/` and add the eight prompt files below.
+Create `prompts/` in the same directory as the `opencode.json` file you are editing, then add the eight prompt files below.
+
+For project setup, that means `your-project/prompts/`. For global setup, that means `~/.config/opencode/prompts/`.
 
 #### `prompts/manager.md`
 
@@ -794,17 +782,29 @@ Return:
 - any docs intentionally left unchanged
 ```
 
----
+### 4. Start OpenCode and Validate the Manager Agent
 
-## First Smoke Test
-
-From the target project root, start OpenCode:
+After the config and prompt files are in place, start OpenCode from the repository where you want to work:
 
 ```bash
 opencode
 ```
 
-Then run a read-only planning request:
+Press `Tab` to open the agent/model selector and confirm that `manager` is available. Select `manager` as the active agent.
+
+If OpenCode reports a missing or unavailable model, run:
+
+```text
+/models
+```
+
+Use `/models` only to confirm the exact model IDs available under your OpenCode Go subscription, then update the affected `model` value in `opencode.json`.
+
+---
+
+## First Smoke Test
+
+With `manager` selected, run a read-only planning request:
 
 ```text
 Use @manager to plan and route this task: review the existing ideation scripts and suggest safe improvements. Do not edit files yet.
@@ -816,7 +816,7 @@ Confirm no files changed:
 git status --short
 ```
 
-This verifies that OpenCode loads the project config, recognizes `@manager`, can route read-only exploration, and respects the no-edit boundary.
+This verifies that OpenCode loads the config, recognizes `manager`, can route read-only exploration through `@manager`, and respects the no-edit boundary.
 
 ---
 
@@ -946,7 +946,7 @@ git restore path/to/file
 
 ## Clean Commit
 
-The normal committed setup is:
+For a project setup, the normal committed files are:
 
 ```text
 opencode.json
@@ -959,6 +959,8 @@ prompts/manager.md
 prompts/reviewer.md
 prompts/scout.md
 ```
+
+For a global setup, do not commit your global OpenCode config to a project repository unless you are intentionally documenting it as an example.
 
 Remove stale duplicate config files such as empty `opencode.jsonc` files unless you intentionally use JSONC instead of JSON. Avoid committing runtime output, secrets, unrelated generated files, `node_modules/`, and macOS metadata files.
 
