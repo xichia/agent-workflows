@@ -63,7 +63,7 @@ For a global setup, create or merge this into `~/.config/opencode/opencode.json`
 
 Do not blindly replace an existing config. Preserve existing provider, theme, command, plugin, or project-specific settings unless you intentionally want to remove them.
 
-The top-level `permission.task` is `"deny"`, so no agent can call a subagent unless a permission block explicitly overrides it. Editing (`permission.edit`) stays loose at `"allow"` so agents don't stall on approval loops for normal file writes. Only the `manager` agent's permission block below overrides `task` with an explicit allowlist of specialist agents it may call. Every specialist subagent keeps `"task": "deny"`, so `build`, other built-in primary agents, and the specialists themselves can never call `scout`, `architect`, `implementer`, `fixer`, `reviewer`, `docs`, or each other.
+The top-level `permission.task` is `"deny"`, so no agent can call a subagent unless a permission block explicitly overrides it. Editing (`permission.edit`) keeps the existing model: `"ask"` at the top level, `"deny"` for the read-only planning/review agents, and `"ask"` for the editing agents (`implementer`, `fixer`, `docs`). Only the `manager` agent's permission block below overrides `task` with an explicit allowlist of specialist agents it may call. Every specialist subagent keeps `"task": "deny"`, so `build`, other built-in primary agents, and the specialists themselves can never call `scout`, `architect`, `implementer`, `fixer`, `reviewer`, `docs`, or each other.
 
 ```json
 {
@@ -71,7 +71,7 @@ The top-level `permission.task` is `"deny"`, so no agent can call a subagent unl
   "plugin": [],
   "default_agent": "manager",
   "permission": {
-    "edit": "allow",
+    "edit": "ask",
     "bash": {
       "*": "ask",
       "git status*": "allow",
@@ -91,14 +91,10 @@ The top-level `permission.task` is `"deny"`, so no agent can call a subagent unl
       "yarn test*": "allow",
       "yarn run test*": "allow",
       "bun test*": "allow",
-      "npm run lint*": "allow",
-      "pnpm run lint*": "allow",
-      "yarn run lint*": "allow",
-      "bun run lint*": "allow",
-      "npm run format*": "allow",
-      "pnpm run format*": "allow",
-      "yarn run format*": "allow",
-      "bun run format*": "allow",
+      "npm run lint*": "ask",
+      "pnpm run lint*": "ask",
+      "yarn run lint*": "ask",
+      "bun run lint*": "ask",
       "npm install*": "ask",
       "pnpm install*": "ask",
       "yarn install*": "ask",
@@ -145,11 +141,11 @@ The top-level `permission.task` is `"deny"`, so no agent can call a subagent unl
           "escalation-planner": "allow",
           "architect": "allow",
           "architect-qwen-max": "allow",
-          "implementer": "allow",
-          "fixer": "allow",
+          "implementer": "ask",
+          "fixer": "ask",
           "reviewer": "allow",
           "reviewer-deepseek-pro": "allow",
-          "docs": "allow"
+          "docs": "ask"
         }
       }
     },
