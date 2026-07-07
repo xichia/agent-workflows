@@ -6,6 +6,8 @@ The goal is to get more repository-coding capacity and token budget from OpenCod
 
 Planning and review agents stay read-only. Editing agents ask before edits and work only inside an approved scope.
 
+Only the `manager` agent is allowed to call specialist subagents. Built-in primary agents (including the default `build` profile) and any non-manager agent do their own work directly and must not route to `scout`, `architect`, `implementer`, `fixer`, `reviewer`, `docs`, or any other specialist. Specialist subagents must not call other subagents. To route work through the specialist roster, select or switch to `manager`.
+
 ---
 
 ## Role Mapping
@@ -61,13 +63,15 @@ For a global setup, create or merge this into `~/.config/opencode/opencode.json`
 
 Do not blindly replace an existing config. Preserve existing provider, theme, command, plugin, or project-specific settings unless you intentionally want to remove them.
 
+The top-level `permission.task` is `"deny"`, so no agent can call a subagent unless a permission block explicitly overrides it. Editing (`permission.edit`) stays loose at `"allow"` so agents don't stall on approval loops for normal file writes. Only the `manager` agent's permission block below overrides `task` with an explicit allowlist of specialist agents it may call. Every specialist subagent keeps `"task": "deny"`, so `build`, other built-in primary agents, and the specialists themselves can never call `scout`, `architect`, `implementer`, `fixer`, `reviewer`, `docs`, or each other.
+
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [],
   "default_agent": "manager",
   "permission": {
-    "edit": "ask",
+    "edit": "allow",
     "bash": {
       "*": "ask",
       "git status*": "allow",
@@ -87,10 +91,14 @@ Do not blindly replace an existing config. Preserve existing provider, theme, co
       "yarn test*": "allow",
       "yarn run test*": "allow",
       "bun test*": "allow",
-      "npm run lint*": "ask",
-      "pnpm run lint*": "ask",
-      "yarn run lint*": "ask",
-      "bun run lint*": "ask",
+      "npm run lint*": "allow",
+      "pnpm run lint*": "allow",
+      "yarn run lint*": "allow",
+      "bun run lint*": "allow",
+      "npm run format*": "allow",
+      "pnpm run format*": "allow",
+      "yarn run format*": "allow",
+      "bun run format*": "allow",
       "npm install*": "ask",
       "pnpm install*": "ask",
       "yarn install*": "ask",
@@ -99,7 +107,7 @@ Do not blindly replace an existing config. Preserve existing provider, theme, co
       "git push*": "deny"
     },
     "external_directory": "ask",
-    "task": "ask"
+    "task": "deny"
   },
   "agent": {
     "manager": {
@@ -137,11 +145,11 @@ Do not blindly replace an existing config. Preserve existing provider, theme, co
           "escalation-planner": "allow",
           "architect": "allow",
           "architect-qwen-max": "allow",
-          "implementer": "ask",
-          "fixer": "ask",
+          "implementer": "allow",
+          "fixer": "allow",
           "reviewer": "allow",
           "reviewer-deepseek-pro": "allow",
-          "docs": "ask"
+          "docs": "allow"
         }
       }
     },
@@ -483,6 +491,8 @@ Do not blindly replace an existing config. Preserve existing provider, theme, co
 ```
 
 Important: keep the `"*": "ask"` bash rule before the more specific `allow`/`deny` rules. OpenCode permission patterns are order-sensitive; later matching rules win.
+
+Important: do not add a `task` allowlist to any agent other than `manager`. If a specialist or a built-in primary agent needs `task` permissions for a new reason, route that need through `manager` instead of loosening the specialist's own `task` permission.
 
 ### 3. Add the Prompt Files
 
@@ -837,6 +847,8 @@ manager/router
 
 Not every task needs every role. The manager/router should skip unnecessary stages, escalate only when complexity justifies it, and keep final review read-only.
 
+If you tab into the built-in `build` profile or another primary agent instead of `manager`, that agent handles the task itself; it cannot call `scout`, `architect`, `implementer`, `fixer`, `reviewer`, or `docs`. Switch back to `manager` whenever you want work routed through the specialist roster.
+
 ---
 
 ## Copy-Paste Prompts
@@ -911,6 +923,8 @@ Do not edit files.
 - Run `git status --short` before and after agent work.
 - Review the complete `git diff` before committing.
 - Keep manager/router, scout, escalation planner, architect, architect alternate, reviewer, and reviewer alternate read-only.
+- Only `manager` may call specialist subagents. Built-in primary agents such as `build`, and every specialist subagent, keep `"task": "deny"` and must do their own work directly.
+- Specialist subagents must not recursively call other subagents.
 - Give editing agents an explicit file or component scope.
 - Use one editing agent at a time; do not let multiple agents edit the same working tree concurrently.
 - Use a branch or Git worktree for risky experiments.
