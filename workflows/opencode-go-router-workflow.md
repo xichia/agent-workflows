@@ -2,7 +2,7 @@
 
 This workflow replaces a manual copy-and-paste, multi-model coding process with a repo-local OpenCode Go setup. A manager agent plans and routes work to specialist subagents for exploration, architecture, implementation, debugging, review, and documentation.
 
-It is intended for users who want to work entirely through an **OpenCode Go subscription**, without maintaining separate Claude, Gemini, OpenAI/Codex, or other API subscriptions.
+It is intended for users who already have mid-tier browser or coding-agent subscriptions, but want more repository-coding capacity and token budget through OpenCode Go without maintaining multiple separate API subscriptions.
 
 ---
 
