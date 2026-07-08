@@ -8,8 +8,8 @@ Use this workflow to get more repository-coding capacity and token budget from O
 
 | Role | Primary model | Job | File access |
 | --- | --- | --- | --- |
-| **Manager / Router / Planning** | Qwen3.7 Plus | Plan, route deterministically, compare specialist outputs, manage escalation, decide readiness | No edits |
-| **Scout** | DeepSeek V4 Flash | Cheap repo scan, relevant files, symbols, tests, commands, current behavior | No edits |
+| **Manager / Router / Planning** | Qwen3.7 Plus | Plan, route deterministically, compare specialist outputs, manage escalation, decide readiness, and default non-trivial implementation through `scout -> implementer -> reviewer` | No edits |
+| **Scout** | DeepSeek V4 Flash | Cheap factual repo scan: relevant files, symbols, tests, commands, current behavior, implementation shape, and validation patterns before higher-cost agents are used | No edits |
 | **Escalation Planner** | GLM 5.2 | Planning for high-risk, unclear, cross-cutting, migration, security, source-of-truth, or public-contract work | No edits |
 | **Architect** | GLM 5.2 | Architecture review, design validation, compatibility, blast radius, contracts, security, migrations, testability | No edits |
 | **Consultant** | Qwen3.7 Max | Manual opt-in high-level second planning/design opinion when explicitly requested or justified | No edits |
@@ -101,7 +101,7 @@ The top-level `permission.task` is `"deny"`, so no agent can call a subagent unl
   },
   "agent": {
     "manager": {
-      "description": "Manager, router, and planning agent using Qwen 3.7 Plus. Routes work deterministically, manages escalation, compares specialist outputs, and decides readiness. Normally routes edits to specialist agents.",
+      "description": "Manager, router, and planning agent using Qwen 3.7 Plus. Routes work deterministically, uses the smallest sufficient agent set, manages escalation, compares specialist outputs, and decides readiness. For non-trivial repo/code implementation, default to scout → implementer → reviewer. For tiny docs, tiny targeted fixes, or already-well-scoped one-file tasks, skip scout when it would add overhead.",
       "mode": "primary",
       "model": "opencode-go/qwen3.7-plus",
       "temperature": 0.1,
@@ -143,7 +143,7 @@ The top-level `permission.task` is `"deny"`, so no agent can call a subagent unl
       }
     },
     "scout": {
-      "description": "Cheap, fast, read-only repo scanner using DeepSeek V4 Flash. Finds relevant files, symbols, tests, commands, and current behavior before higher-cost agents are used.",
+      "description": "Cheap, fast, read-only repo scanner using DeepSeek V4 Flash. Finds relevant files, symbols, tests, commands, current behavior, existing implementation shape, and validation patterns before higher-cost agents are used. Summarizes facts only; does not plan broad strategy or edit files.",
       "mode": "subagent",
       "model": "opencode-go/deepseek-v4-flash",
       "temperature": 0.1,
@@ -462,7 +462,7 @@ For project setup, that means `your-project/prompts/`. For global setup, that me
 ```markdown
 You are the manager, router, and planning agent for this repository.
 
-You do not directly edit files. Your job is to understand the user's request, route work to the smallest necessary set of specialist agents, compare their outputs, manage escalation, and decide whether the result is safe to present or ready to merge. Route edits to specialist agents instead of editing directly.
+Your job is to understand the user's request, route work to the smallest necessary set of specialist agents, compare their outputs, manage escalation, and decide whether the result is safe to present or ready to merge. Normally route edits to specialist agents instead of editing directly.
 
 Available agents:
 - scout: cheap, fast, read-only repo exploration using DeepSeek V4 Flash.
@@ -483,7 +483,7 @@ Default behavior:
 
 Escalation behavior:
 1. No escalation needed when the request is small, mechanical, low-risk, docs-only, artifact-only, or has obvious scope.
-2. Use scout when cheap read-only discovery is needed before deciding scope.
+2. Use scout when cheap read-only discovery, relevant file discovery, existing implementation-shape summary, validation-pattern summary, or facts-before-planning are needed. For non-trivial repo/code implementation, scout should usually run before implementer unless the prompt already contains enough concrete file-level context.
 3. Use escalation-planner before implementation when the task has unclear scope, multiple plausible execution paths, cross-file impact, source-of-truth implications, migration/security risk, architectural risk, or public-contract / external-interface impact.
 4. Use architect when the design shape itself needs review: new mechanics, level progression, gameplay systems, data model changes, state-machine changes, abstractions, compatibility risk, or architectural blast radius.
 5. Use implementer only after the edit scope is clear and bounded.
@@ -511,10 +511,11 @@ Do not use consultant for:
 
 Anti-bloat routing patterns:
 - Small docs/artifact task: manager-only or manager -> docs
+- Tiny targeted fix with obvious file/scope: manager-only or manager -> fixer/reviewer as needed
 - Repo discovery task: manager -> scout
-- Normal implementation: manager -> implementer -> reviewer
-- Risky implementation: manager -> escalation-planner or architect -> implementer -> reviewer
-- Bug/failing validation: manager -> fixer -> reviewer
+- Normal non-trivial implementation: manager -> scout -> implementer -> reviewer
+- Risky implementation: manager -> scout -> escalation-planner or architect -> implementer -> reviewer
+- Bug/failing validation: manager -> scout if facts are needed -> fixer -> reviewer
 - Broad design uncertainty: manager -> architect; optionally consultant only if explicitly justified
 
 Runtime truth rule:
@@ -525,8 +526,11 @@ Budget rules:
 - Prefer docs only for documentation, cleanup, examples, comments, changelog notes, reports, or user-facing explanations.
 - Use GLM 5.2 for decisions that materially affect architecture, escalation, migration, compatibility, risk, or merge safety; keep prompts compact and ask for bounded recommendations, not full transcripts.
 - Use DeepSeek V4 Pro for final review, debugging, regression risk, and concrete failure diagnosis.
-- Use consultant only when a broad second high-level opinion is explicitly valuable.
+- Use consultant only when Ian explicitly requests it or when a broad second high-level opinion is explicitly valuable.
 - Keep reviewer prompts compact: send diff scope, key files, validation results, and explicit concerns; do not ask reviewers to re-summarize full task history.
+
+Scout handoff rule:
+When using scout before implementation, ask for a compact factual handoff covering relevant files, current implementation shape, relevant symbols/config, validation/test patterns, likely change points, risks/unknowns, and recommended next agent. Do not ask scout for broad strategy, design authority, or edits.
 
 When assigning work, give the subagent:
 - goal;
@@ -925,7 +929,7 @@ This verifies that OpenCode loads the config, recognizes `manager`, can route re
 
 ```text
 manager/router
-  scout: find relevant files and current behavior when discovery is needed →
+  scout: factual handoff for non-trivial repo/code tasks →
   escalation-planner: handle complex planning if risk is high or scope is unclear →
   architect: review the smallest safe design if design risk is non-trivial →
   consultant: optional manual high-level second opinion when explicitly requested or justified →
@@ -937,6 +941,8 @@ manager/router
 
 Not every task needs every role. The manager/router should skip unnecessary stages, escalate only when complexity justifies it, and keep consultation and final review read-only.
 
+For non-trivial repo/code implementation, the default path is `manager -> scout -> implementer -> reviewer`. Skip Scout for tiny docs, tiny targeted fixes, or already well-scoped one-file tasks where discovery would add overhead.
+
 If you tab into the built-in `build` profile or another primary agent instead of `manager`, that agent handles the task itself; it cannot call `scout`, `escalation-planner`, `architect`, `consultant`, `implementer`, `fixer`, `reviewer`, or `docs`. Switch back to `manager` whenever you want work routed through the specialist roster.
 
 ---
@@ -947,7 +953,7 @@ If you tab into the built-in `build` profile or another primary agent instead of
 
 ```text
 Use @manager to plan and route this task: [describe the task].
-Use @scout only if cheap discovery is needed to identify relevant files, current behavior, tests, and constraints.
+Use @scout when cheap factual discovery is needed: relevant files, current implementation shape, symbols/config, validation patterns, tests, risks, and likely change points.
 Use @escalation-planner only for complex planning, high-risk architecture, migrations, compatibility risk, security risk, source-of-truth risk, public-contract risk, or unclear implementation strategy.
 Use @architect when the design shape itself needs non-trivial review.
 Use @consultant only when a manual high-level second planning/design opinion is explicitly requested or justified.
@@ -959,6 +965,8 @@ Return the smallest safe implementation plan, proposed edit scope, risks, and ve
 
 ```text
 The plan and this edit scope are approved: [list exact files or components].
+
+If this is non-trivial repo/code work and Scout has not already produced a factual handoff, route to @scout first for relevant files, current implementation shape, validation patterns, risks, and likely change points.
 
 Route implementation to @implementer.
 Change only the approved scope and ask before any additional edits.
