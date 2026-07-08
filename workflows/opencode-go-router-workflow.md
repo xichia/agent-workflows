@@ -10,8 +10,8 @@ Use this workflow to get more repository-coding capacity and token budget from O
 | --- | --- | --- | --- |
 | **Manager / Router / Planning** | Qwen3.7 Plus | Plan, route deterministically, compare specialist outputs, manage escalation, decide readiness | No edits |
 | **Scout** | DeepSeek V4 Flash | Cheap repo scan, relevant files, symbols, tests, commands, current behavior | No edits |
-| **Escalation Planner** | GLM 5.2 | Token-disciplined planning for high-risk, unclear, cross-cutting, migration, security, source-of-truth, or public-contract work | No edits |
-| **Architect** | GLM 5.2 | Token-disciplined architecture review, design validation, compatibility, blast radius, contracts, security, migrations, testability | No edits |
+| **Escalation Planner** | GLM 5.2 | Planning for high-risk, unclear, cross-cutting, migration, security, source-of-truth, or public-contract work | No edits |
+| **Architect** | GLM 5.2 | Architecture review, design validation, compatibility, blast radius, contracts, security, migrations, testability | No edits |
 | **Consultant** | Qwen3.7 Max | Manual opt-in high-level second planning/design opinion when explicitly requested or justified | No edits |
 | **Implementer** | Kimi K2.7 Code | Make scoped code changes from an approved plan with the smallest safe diff | Ask before edits |
 | **Fixer** | DeepSeek V4 Pro | Diagnose failures, runtime contradictions, concrete bugs, and repair root causes | Ask before edits |
