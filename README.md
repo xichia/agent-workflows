@@ -13,6 +13,7 @@ The Antigravity workflow uses these specific terms:
 
 - [Gemini 3.5 Flash (Low) in Antigravity: IDE Executor Workflow](workflows/antigravity-flash-low-workflow.md) — pairs a frontier browser planner with a low-cost IDE executor for bounded file and terminal tasks.
 - [OpenCode Go Router Process: Manager and Specialist Workflow](workflows/opencode-go-router-workflow.md) — replaces a manual multi-model copy-and-paste process with a repo-local OpenCode Go manager that routes work to specialist agents. Use it when you already have mid-tier browser or coding-agent subscriptions but want more repository-coding capacity, token budget, and role-based routing without maintaining multiple separate API subscriptions.
+- [Hybrid Model Workflow for Agentic Coding](workflows/hybrid-model-workflow.md) — explains how GPT-5.5, Gemini, OpenCode, Claude Code, Codex, and Ian fit into the overall execution model.
 
 For OpenCode Go setup, follow the workflow's recommended project layout, prompt patterns, permissions, and manual smoke test. Keep OpenCode-specific notes under `.opencode/` in the target project.
 
