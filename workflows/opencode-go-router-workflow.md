@@ -8,11 +8,11 @@ Use this workflow to get more repository-coding capacity and token budget from O
 
 | Role | Primary model | Job | File access |
 | --- | --- | --- | --- |
-| **Manager / Router / Planning** | Qwen3.7 Plus | Plan, route deterministically, compare specialist outputs, manage escalation, decide readiness, and default non-trivial implementation through `scout -> implementer -> reviewer` | No edits |
+| **Manager / Router / Planning** | Qwen 3.7 Plus | Plan, route deterministically, compare specialist outputs, manage escalation, decide readiness, and default non-trivial implementation through `scout -> implementer -> reviewer` | No edits |
 | **Scout** | DeepSeek V4 Flash | Factual repo handoff covering relevant files, symbols, tests, current behavior, implementation shape, validation patterns, likely change points, risks, and boundaries | No edits |
 | **Escalation Planner** | GLM 5.2 | Planning for high-risk, unclear, cross-cutting, migration, security, source-of-truth, or public-contract work | No edits |
 | **Architect** | GLM 5.2 | Architecture review, design validation, compatibility, blast radius, contracts, security, migrations, testability | No edits |
-| **Consultant** | Qwen3.7 Max | Manual opt-in high-level second planning/design opinion when explicitly requested or justified | No edits |
+| **Consultant** | Qwen 3.7 Max | Manual opt-in high-level second planning/design opinion when explicitly requested or justified | No edits |
 | **Implementer** | Kimi K2.7 Code | Make scoped code changes from an approved plan with the smallest safe diff | Ask before edits |
 | **Fixer** | DeepSeek V4 Pro | Diagnose failures, runtime contradictions, concrete bugs, and repair root causes | Ask before edits |
 | **Reviewer** | DeepSeek V4 Pro | Primary final read-only diff review, blockers/yellow flags, regression risk, compliance, merge readiness | No edits |
