@@ -1,8 +1,8 @@
 # Hybrid Model Workflow for Agentic Coding
 
-This document describes how to choose between available coding-agent executors and how OpenCode, Claude Code, Codex, Gemini, GPT-5.5, and Ian fit into the overall workflow.
+This document describes how to choose between available coding-agent executors and how OpenCode, Claude Code, Codex, Gemini, GPT-5.5, and the human operator fit into the overall workflow.
 
-Ian = human ratifier  
+Human operator = final ratifier  
 GPT-5.5 in browser = strategic project/model manager
 
 ## Executor Lane A — Gemini directly inside Antigravity IDE
@@ -48,7 +48,7 @@ GPT-5.5 in browser = strategic project/model manager
 - If Lane B is chosen, OpenCode’s Qwen3.7 Plus manager may route internally to its configured open-source specialist agents.
 - If Lane C is chosen, Claude Sonnet 5 handles the task directly inside Claude Code; `/advisor` invokes Claude Opus 4.8 for advisory escalation.
 - If Lane D is chosen, Codex handles the task directly inside Codex IDE.
-- Ian reviews results, approves commits/pushes, and ratifies any source-of-truth changes.
+- The human operator reviews results, approves commits/pushes, and ratifies any source-of-truth changes.
 
 ## Short Rule
 
@@ -57,4 +57,4 @@ Gemini first when sufficient, then OpenCode, then Claude Code, then Codex when p
 
 OpenCode only routes inside Lane B.
 Claude Code uses Sonnet 5 directly, with /advisor Opus 4.8 for escalation.
-Ian ratifies what becomes part of the project.
+The human operator ratifies what becomes part of the project.
