@@ -14,20 +14,32 @@ GPT-5.5 in browser = strategic project/model manager
 ## Executor Lane B — OpenCode
 
 - Local OpenCode manager: Qwen3.7 Plus
-- Routes internally to OpenCode-configured open-source models
-- Best for multi-step routed work: inspect → plan → implement → review → report
+- Routes internally to configured specialist agents
+- Best for multi-step routed work: inspect → factual handoff → plan/escalate if needed → implement → debug if needed → review → report
+- For non-trivial repo/code work, the manager normally uses Scout first for a compact factual handoff before implementation or escalation
+- Tiny docs, tiny targeted fixes, and already well-scoped one-file tasks may skip Scout when discovery would add overhead
 
 ### OpenCode internal model roles
 
-- Manager / router / planning: Qwen3.7 Plus
-- Scout / factual repo handoff: DeepSeek V4 Flash
-- Escalation planning / complex planning: GLM 5.2
-- Architecture review / design validation: GLM 5.2
-- Consultant / high-level second opinion: Qwen3.7 Max
-- Implementation: Kimi K2.7 Code
-- Debugging / failing tests / runtime contradictions: DeepSeek V4 Pro
-- Final review: DeepSeek V4 Pro
-- Docs / cleanup: MiniMax M3
+- `manager` — Manager / router / planning: Qwen3.7 Plus
+- `scout` — Scout / factual repo handoff: DeepSeek V4 Flash
+- `escalation-planner` — Escalation planning / complex planning: GLM 5.2
+- `architect` — Architecture review / design validation: GLM 5.2
+- `consultant` — Consultant / high-level second opinion: Qwen3.7 Max
+- `implementer` — Implementation: Kimi K2.7 Code
+- `fixer` — Debugging / failing tests / runtime contradictions: DeepSeek V4 Pro
+- `reviewer` — Final review: DeepSeek V4 Pro
+- `docs` — Docs / cleanup: MiniMax M3
+
+### OpenCode routing and safety notes
+
+- Scout provides factual handoffs only; it does not perform broad strategy or edit files.
+- Escalation planner handles unclear, cross-cutting, source-of-truth-sensitive, migration/security, or public-contract work before implementation.
+- Architect validates design shape, data models, abstractions, state-machine changes, compatibility, and blast-radius risk.
+- Consultant is manual opt-in only for high-level second opinions and is not part of default routing.
+- Reviewer performs the final read-only diff review before completion, except for trivial single-file mechanical changes with explicit justification.
+- Human approval is required for pushes, dependency modifications, destructive git operations, and complex plans before coding. Force-pushes are blocked.
+- Runtime/browser/playtest behavior overrides model claims.
 
 ## Executor Lane C — Claude Code
 
@@ -45,7 +57,7 @@ GPT-5.5 in browser = strategic project/model manager
 
 - GPT-5.5 chooses the executor lane and writes the bounded mission prompt.
 - If Lane A is chosen, GPT-5.5 chooses the Gemini model to handle the task directly inside Antigravity IDE.
-- If Lane B is chosen, OpenCode’s Qwen3.7 Plus manager may route internally to its configured open-source specialist agents.
+- If Lane B is chosen, OpenCode’s Qwen3.7 Plus manager routes internally to its configured specialist agents.
 - If Lane C is chosen, Claude Sonnet 5 handles the task directly inside Claude Code; `/advisor` invokes Claude Opus 4.8 for advisory escalation.
 - If Lane D is chosen, Codex handles the task directly inside Codex IDE.
 - The human operator reviews results, approves commits/pushes, and ratifies any source-of-truth changes.
