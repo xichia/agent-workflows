@@ -59,7 +59,7 @@ For full OpenCode setup, config, permissions, and prompt templates, see [OpenCod
 
 ## Operating Model
 
-- GPT-5.5 chooses the executor lane and writes the bounded mission prompt.
+- GPT-5.5 chooses the executor lane and writes the bounded mission prompt. The human operator then copies that prompt into the relevant IDE or model environment for the selected lane.
 - If Lane A is chosen, GPT-5.5 chooses the Gemini model to handle the task directly inside Antigravity IDE.
 - If Lane B is chosen, OpenCode’s Qwen 3.7 Plus manager routes internally to its configured specialist agents.
 - If Lane C is chosen, Claude Sonnet 5 handles the task directly inside Claude Code; `/advisor` invokes Claude Opus 4.8 for advisory escalation.
