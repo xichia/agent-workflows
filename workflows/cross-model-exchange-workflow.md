@@ -64,13 +64,17 @@ Source files, runtime behavior, tests, diffs, and git state outrank model summar
 
 ## 2. GPT-5.6 Sol Browser Configuration
 
-The normal browser configuration is:
+**GPT-5.6 Sol High** is the project/model manager for this workflow.
 
-- **GPT-5.6 Sol High** — the normal default for project management in this workflow. Use it for executor selection, assignment design, evidence review, cross-model reconciliation, and normal project-management decisions.
-- **GPT-5.6 Sol Medium** — a deliberate efficiency mode, not the normal default. Step down to Medium for routine, low-ambiguity coordination, such as mechanical follow-ups, where extended reasoning is unlikely to add material value.
-- **GPT-5.6 Sol Extra High** — a rare escalation for unusually consequential, ambiguous, or conflicting decisions, including source-of-truth, architecture, migration, permissions, and governance issues.
+The workflow deliberately uses a strong GPT project manager because it places substantial coordination and judgment responsibility on the manager. Sol High manages:
 
-High is the default because this workflow deliberately places substantial coordination and review responsibility on the GPT project manager: it continuously selects executors, reconciles evidence across model families, and decides when a targeted Codex intervention is warranted. Medium remains available as an efficiency step-down, not a default. Extra High should not become automatic — select it deliberately, not routinely.
+- executor and model selection;
+- assignment design;
+- evidence and diff review;
+- reconciliation between Claude and Codex findings;
+- architecture-aware coordination;
+- governance and source-of-truth-sensitive decisions;
+- follow-up routing.
 
 The project manager's browser configuration is separate from the model configuration assigned to the repository executor.
 
@@ -216,7 +220,7 @@ Not every task needs every model. These patterns are illustrative, not mandatory
 ### Normal implementation
 
 ```text
-GPT-5.6 Sol manager
+GPT-5.6 Sol High manager
 → Claude Code Sonnet 5 implementation
 → GPT-5.6 Sol evidence review
 → human ratification
@@ -225,7 +229,7 @@ GPT-5.6 Sol manager
 ### Difficult implementation
 
 ```text
-GPT-5.6 Sol manager
+GPT-5.6 Sol High manager
 → Claude Code Opus 4.8 implementation
 → GPT-5.6 Sol review
 → focused Opus or Sonnet follow-up
@@ -235,7 +239,7 @@ GPT-5.6 Sol manager
 ### Independent challenge
 
 ```text
-GPT-5.6 Sol manager
+GPT-5.6 Sol High manager
 → Claude Code implementation
 → GPT-5.6 Sol identifies a material uncertainty
 → Codex receives a narrow independent verification task
@@ -246,7 +250,7 @@ GPT-5.6 Sol manager
 ### High-consequence work
 
 ```text
-GPT-5.6 Sol High or Extra High manager
+GPT-5.6 Sol High manager
 → Claude Code Fable 5 bounded mission or review
 → targeted Codex verification where useful
 → GPT-5.6 Sol reconciles conclusions and evidence
@@ -262,7 +266,7 @@ For every repository task, the project manager should provide a complete assignm
 ```text
 Executor assignment
 
-Project manager: GPT-5.6 Sol <High, Medium, or Extra High>
+Project manager: GPT-5.6 Sol High
 Executor: <Claude Code or Codex>
 Environment: <CLI, IDE, app, or other surface>
 Model/configuration: <exact selection>
