@@ -66,11 +66,11 @@ Source files, runtime behavior, tests, diffs, and git state outrank model summar
 
 The normal browser configuration is:
 
-- **GPT-5.6 Sol Medium** — the normal default for project management.
-- **GPT-5.6 Sol High** — difficult architecture decisions, conflicting executor evidence, permissions, governance, migrations, or high-consequence review.
-- **GPT-5.6 Sol Extra High** — rare, unusually ambiguous or consequential management decisions where deeper reasoning is likely to prevent expensive errors.
+- **GPT-5.6 Sol High** — the normal default for project management in this workflow. Use it for executor selection, assignment design, evidence review, cross-model reconciliation, and normal project-management decisions.
+- **GPT-5.6 Sol Medium** — a deliberate efficiency mode, not the normal default. Step down to Medium for routine, low-ambiguity coordination, such as mechanical follow-ups, where extended reasoning is unlikely to add material value.
+- **GPT-5.6 Sol Extra High** — a rare escalation for unusually consequential, ambiguous, or conflicting decisions, including source-of-truth, architecture, migration, permissions, and governance issues.
 
-Extra High is not the automatic default. Select it deliberately, not routinely.
+High is the default because this workflow deliberately places substantial coordination and review responsibility on the GPT project manager: it continuously selects executors, reconciles evidence across model families, and decides when a targeted Codex intervention is warranted. Medium remains available as an efficiency step-down, not a default. Extra High should not become automatic — select it deliberately, not routinely.
 
 The project manager's browser configuration is separate from the model configuration assigned to the repository executor.
 
@@ -262,7 +262,7 @@ For every repository task, the project manager should provide a complete assignm
 ```text
 Executor assignment
 
-Project manager: GPT-5.6 Sol <Medium, High, or Extra High>
+Project manager: GPT-5.6 Sol <High, Medium, or Extra High>
 Executor: <Claude Code or Codex>
 Environment: <CLI, IDE, app, or other surface>
 Model/configuration: <exact selection>
