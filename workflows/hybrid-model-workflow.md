@@ -1,74 +1,151 @@
 # Hybrid Model Workflow for Agentic Coding
 
-This document describes how to choose between available coding-agent executors and how OpenCode, Claude Code, Codex, Gemini, GPT-5.5, and the human operator fit into the overall workflow.
+This document defines the operating model for the hybrid-model agentic coding workflow, establishing the boundaries between the human operator, the strategic project manager, and the repository-aware executors.
 
-The model names below are example assignments. Adapt them to whatever subscriptions and model availability you actually have.
+## Role Boundaries
 
-Human operator = final ratifier  
-GPT-5.5 in browser = strategic project/model manager
+### The Human Operator
+- **Role:** The final ratifier.
+- **Responsibilities:** Reviews assignment packets, manually selects the browser model when required, executes the assigned prompt in the appropriate lane, and ratifies what becomes part of the project.
 
-## Executor Lane A — Gemini directly inside Antigravity IDE
+### ChatGPT in the Browser
+- **Role:** The strategic project/model manager.
+- **Capabilities:** The project manager can do more than write prompts. It can:
+  - research current external facts when needed;
+  - inspect supplied files, diffs, logs, reports, and command output;
+  - compare executor outputs;
+  - identify contradictions and missing evidence;
+  - coordinate multi-stage work;
+  - prepare supporting artifacts;
+  - define approval gates;
+  - review validation evidence;
+  - decide the next executor, model, and reasoning level.
+- **Important Boundary:** The project manager must not claim live repository knowledge unless that state is available through uploaded files, connected tools, command output, diffs, logs, or executor reports.
 
-- Gemini 3.5 Flash (Low, Medium, High)
-- Gemini 3.1 Pro (Low, High)
-- Best for direct IDE execution, quick implementation
+### Repository-Aware Executors
+- **Role:** File inspection, editing, and execution.
+- **Responsibilities:** Executors (such as Gemini, OpenCode, Claude Code, and Codex) inspect files, edit, run commands, validate, and report back to the project manager.
+- **Hierarchy of Truth:** Source files, runtime behavior, tests, and git evidence outrank model summaries.
 
-## Executor Lane B — OpenCode
+## Seven-Step Operating Model
 
-- Local OpenCode manager: Qwen 3.7 Plus
-- Routes internally to configured specialist agents
-- Best for multi-step routed work: inspect → factual handoff → plan/escalate if needed → implement → debug if needed → review → report
-- For non-trivial repo/code work, the manager normally uses Scout first for a compact factual handoff before implementation or escalation
-- Tiny docs, tiny targeted fixes, and already well-scoped one-file tasks may skip Scout when discovery would add overhead
+1. **Review:** The project manager reviews the task, context, and external facts.
+2. **Lane Selection:** The project manager decides the executor lane, model, reasoning level, and validation requirements based on task fit (the rigid lane hierarchy has been removed in favor of task-fit selection).
+3. **Assignment:** The project manager provides the human operator with a clear assignment packet (including the bounded prompt and commit/push permissions).
+4. **Execution:** The human operator reviews the assignment packet, confirms the browser config, and executes the bounded prompt in the assigned lane.
+5. **Implementation:** The selected repository-aware executor inspects files, implements the changes, validates, and generates a final report.
+6. **Verification:** The project manager reviews the executor's final report, diffs, and validation evidence.
+7. **Ratification:** The human operator acts as the final ratifier, approving commits, blocking force-pushes, and ratifying source-of-truth changes.
 
-### OpenCode internal model roles
+## ChatGPT Browser Configuration
 
-- `manager` — Manager / router / planning: Qwen 3.7 Plus
-- `scout` — Scout / factual repo handoff: DeepSeek V4 Flash
-- `escalation-planner` — Escalation planning / complex planning: GLM 5.2
-- `architect` — Architecture review / design validation: GLM 5.2
-- `consultant` — Consultant / high-level second opinion: Qwen 3.7 Max
-- `implementer` — Implementation: Kimi K2.7 Code
-- `fixer` — Debugging / failing tests / runtime contradictions: DeepSeek V4 Pro
-- `reviewer` — Final review: DeepSeek V4 Pro
-- `docs` — Docs / cleanup: MiniMax M3
+The project manager's capabilities in the browser are configured as follows:
 
-### OpenCode routing and safety notes
+- **Instant 5.5:** The normal default for routine coordination, executor selection, prompt writing, straightforward report review, and low-risk governance decisions.
+- **Automatic GPT-5.6 Sol Medium:** Allow the default experience to escalate automatically when the task needs more reasoning but does not justify deliberate manual escalation. (Do not manually select Medium; this is an automatic behavior of the Instant experience.)
+- **GPT-5.6 Sol High:** Manually select for difficult architecture or workflow decisions, conflicting executor evidence, permissions and governance design, source-of-truth-sensitive changes, complex migrations, or high-consequence review.
 
-- Scout provides factual handoffs only; it does not perform broad strategy or edit files.
-- Escalation planner handles unclear, cross-cutting, source-of-truth-sensitive, migration/security, or public-contract work before implementation.
-- Architect validates design shape, data models, abstractions, state-machine changes, compatibility, and blast-radius risk.
-- Consultant is manual opt-in only for high-level second opinions and is not part of default routing.
-- Reviewer performs the final read-only diff review before completion, except for trivial single-file mechanical changes with explicit justification.
-- Human approval is required for pushes, dependency modifications, destructive git operations, and complex plans before coding. Force-pushes are blocked.
-- Runtime/browser/playtest behavior overrides model claims.
+*Note: Do not list Extra High or Pro as browser project-manager options.*
 
-For full OpenCode setup, config, permissions, and prompt templates, see [OpenCode Go Router Workflow: Manager and Specialist Agents](opencode-go-router-workflow.md).
+When useful in documentation or workflow descriptions, identify the browser configuration as one of:
+- `ChatGPT browser: Instant 5.5, with automatic escalation to GPT-5.6 Sol Medium`
+- `ChatGPT browser: GPT-5.6 Sol High`
 
-## Executor Lane C — Claude Code
+Keep the distinction clear between the ChatGPT browser configuration used by the project manager and the separate model and reasoning configuration assigned to a repository executor.
 
-- Claude Sonnet 5 handles the prompt directly in Claude Code
-- `/advisor` uses Claude Opus 4.8 for higher-level review, strategy, architecture critique, and difficult judgment calls
-- Best for agentic coding sessions where Claude Code can inspect, edit, test, and iterate directly
-- Use Sonnet 5 for normal implementation flow; invoke `/advisor` Opus 4.8 when the task needs stronger reasoning, second-opinion review, or architectural escalation
+## Executor Assignment Packets
 
-## Executor Lane D — Codex IDE
+The project manager must provide the human operator with a clear executor assignment containing:
+- Executor lane
+- Environment or surface
+- Exact model
+- Reasoning or thinking level, when available
+- Why the configuration fits
+- Target repository or directory
+- Approval gates
+- Expected validation
+- Commit and push permissions
+- A paste-ready bounded prompt
 
-- Codex handles the prompt directly
-- Best for precise code surgery, debugging, refactors, disciplined patches, and fixing messy or subtle implementation problems
+The project manager should assign the executor configuration explicitly rather than leaving the human operator to infer it.
 
-## Operating Model
+## Executor Lanes
 
-- GPT-5.5 chooses the executor lane and writes the bounded mission prompt. The human operator then copies that prompt into the relevant IDE or model environment for the selected lane.
-- If Lane A is chosen, GPT-5.5 chooses the Gemini model to handle the task directly inside Antigravity IDE.
-- If Lane B is chosen, OpenCode’s Qwen 3.7 Plus manager routes internally to its configured specialist agents.
-- If Lane C is chosen, Claude Sonnet 5 handles the task directly inside Claude Code; `/advisor` invokes Claude Opus 4.8 for advisory escalation.
-- If Lane D is chosen, Codex handles the task directly inside Codex IDE.
-- The human operator reviews results, approves commits/pushes, and ratifies any source-of-truth changes.
+The four lanes are presented in the normal repository-executor order: Codex, Claude Code, OpenCode, then Gemini. This presentation order is not a rigid escalation hierarchy; select the lane that best fits the task.
 
-## Short Rule
+### Executor Lane A — Codex
+Codex is a full repository-aware engineering lane capable of end-to-end implementation rather than only a debugging/code-surgery lane.
 
-GPT-5.5 chooses the lane, following the preferred hierarchy:
-Gemini first when sufficient, then OpenCode, then Claude Code, then Codex when precision/debugging is the better fit.
+**Preferred Codex Models:**
+- **GPT-5.6 Sol**
+- **GPT-5.6 Terra**
+- **GPT-5.6 Luna**
 
-The human operator ratifies what becomes part of the project.
+Codex model selection and reasoning effort are treated as separate choices.
+
+**Codex Reasoning Levels:**
+- **Low**
+- **Medium**
+- **High**
+- **Extra High**
+- **Max:** The strongest single-agent reasoning level.
+- **Ultra:** Potentially uses subagents and is only appropriate when useful decomposition or parallel investigation exists.
+
+**Codex Selection Guidance:**
+The project manager must explicitly provide the exact Codex model and reasoning level before the prompt. Use the following guidance based on task fit:
+- *GPT-5.6 Luna (Low/Medium):* Quick code surgery, straightforward mechanical refactors.
+- *GPT-5.6 Terra (Medium/High):* Standard feature implementation, disciplined patches, debugging.
+- *GPT-5.6 Sol (High/Extra High/Max):* Difficult architecture problems, messy implementations, subtle bug fixing, complex refactoring.
+- *GPT-5.6 Sol (Ultra):* Large-scale tasks or deep investigations where parallel subagent decomposition adds value.
+
+**Codex Assignment and Final Report Requirements:**
+- The project manager must explicitly assign the exact model and reasoning level in the assignment packet.
+- The executor's final report must document: exactly what was changed, execution of validation commands, and whether the implementation meets the assignment's explicit approval gates.
+
+### Executor Lane B — Claude Code
+Claude Code provides selectable models that the project manager may assign directly:
+
+- **Sonnet 5**: Normal repository inspection, implementation, testing, and iterative coding.
+- **Opus 4.8**: Difficult implementation, complex debugging, architecture-aware work, or stronger sustained reasoning.
+- **Fable 5**: High-level judgment, strategy, architecture critique, source-of-truth-sensitive review, or a focused second opinion.
+
+**Fable 5 Instructions:**
+When Fable 5 is selected, the project manager must write a concise and tightly bounded prompt that tells it to:
+- avoid unnecessary repository reading;
+- inspect only the files and evidence needed to answer the question;
+- remain token-conscious during investigation and output;
+- avoid restating large amounts of repository context;
+- return only material conclusions, risks, disagreements, and recommendations.
+
+Include this reusable instruction in the Fable 5 prompt:
+```text
+Keep this review concise and token-conscious. Do not perform unnecessary repository reading. Inspect only the files and evidence required to answer the question, avoid restating context, and report only material conclusions, risks, disagreements, and recommendations.
+```
+
+### Executor Lane C — OpenCode
+OpenCode is best when the task benefits from explicit specialist routing, a cheap factual Scout handoff, separate implementation and review roles, bounded escalation, and structured final reporting.
+
+*Note: The browser project manager does not directly route OpenCode specialists; it writes the routing contract, and the OpenCode manager performs the internal routing.*
+
+**Internal Model Roles:**
+- `manager` — Qwen3.7 Plus
+- `scout` — DeepSeek V4 Flash
+- `escalation-planner` — GLM 5.2
+- `architect` — GLM 5.2
+- `consultant` — Qwen3.7 Max (Manual opt-in only)
+- `implementer` — Kimi K2.7 Code
+- `fixer` — DeepSeek V4 Pro
+- `reviewer` — DeepSeek V4 Pro
+- `docs` — MiniMax M3
+
+**Routing Model:**
+- Default route: `manager -> scout -> implementer -> reviewer`
+- Downstream specialist briefs depending on discovery must include a section titled: `Context from Scout`
+- Keep escalation-planner before architect when both may be needed.
+
+### Executor Lane D — Gemini
+Gemini is a direct IDE lane suited to clear, bounded implementation, documentation changes, test updates, mechanical refactors, low- to moderate-risk repository work, and tasks where direct IDE execution is more useful than multi-agent routing.
+
+Available configurations:
+- **Gemini 3.5 Flash** (Low, Medium, High): Use when speed and economy matter and the task is straightforward.
+- **Gemini 3.1 Pro** (Low, High): Use High for more demanding direct IDE work requiring stronger judgment, broader context, or careful document restructuring.
