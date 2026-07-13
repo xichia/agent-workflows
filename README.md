@@ -12,6 +12,10 @@ This repository collects practical workflows for using AI coding tools safely an
 
 For OpenCode Go setup, follow the workflow's recommended project layout, prompt patterns, permissions, and manual smoke test. Use a project-root `opencode.json` plus `prompts/`, or a global `~/.config/opencode/` setup, as described in that workflow.
 
+### Experimental workflows
+
+- [Cross-Model Exchange Workflow for Agentic Coding](workflows/cross-model-exchange-workflow.md) — uses GPT-5.6 Sol as the project manager, Claude Code as the primary repository executor, and Codex for targeted independent or surgical work.
+
 ## Templates
 
 - [Repo-local AGENT_WORKFLOW.md template](templates/AGENT_WORKFLOW.md)
