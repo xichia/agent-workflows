@@ -1,6 +1,6 @@
 # Cross-Model Exchange Workflow for Agentic Coding
 
-This workflow defines an experimental operating model for repository work using three primary tools:
+This workflow defines an alternative operating model for repository work using three primary tools:
 
 1. **GPT-5.6 Sol in the browser** as the strategic project/model manager.
 2. **Claude Code** as the normal repository-aware executor.
@@ -105,6 +105,8 @@ Available models:
 - **Sonnet 5**
 - **Opus 4.8**
 - **Fable 5**
+
+Claude Code uses the selected model's default effort configuration. The workflow does not treat effort selection as a separate project-manager decision.
 
 ### Sonnet 5
 
