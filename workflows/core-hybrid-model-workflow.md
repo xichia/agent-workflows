@@ -1,12 +1,16 @@
 # Core Hybrid Model Workflow for Agentic Coding
 
-This workflow defines a simple operating model for repository work using three primary tools:
+This workflow defines an operating model for repository work using three primary tools:
 
-1. **ChatGPT in the browser** as the project/model manager.
-2. **Codex** as the default repository-aware executor.
-3. **Claude Code** as an alternate executor when a Claude model is the better fit.
+1. **GPT-5.6 Sol in the browser** as the strategic project/model manager.
+2. **Claude Code** as the normal repository-aware executor.
+3. **Codex** as a targeted third lane for selective, bounded work.
 
-OpenCode is not part of the default path. It may be introduced as a specialist workflow when explicit routing, role separation, or independent review would materially improve the task.
+This is a managed exchange between two model families, not model switching for its own sake. The purpose is productive separation between project management and repository execution, between initial implementation and independent challenge, and between model families with potentially different strengths and blind spots.
+
+```text
+GPT-5.6 Sol High manages. Claude Code executes by default using Sonnet 5, Opus 4.8, or Fable 5. Codex performs targeted work or serves as a fallback when appropriate. The human operator ratifies what becomes part of the project.
+```
 
 ---
 
@@ -18,204 +22,83 @@ The human operator is the final ratifier.
 
 The human operator:
 
-- defines the goal and supplies available context;
-- launches the selected executor with the assigned configuration and prompt;
+- defines the desired outcome and supplies available context;
+- launches the assigned executor with the assigned configuration and prompt;
 - reviews important diffs and validation evidence;
 - approves source-of-truth changes;
-- controls commits, pushes, dependency changes, migrations, and other high-impact actions.
+- controls commits, pushes, dependency changes, migrations, permissions, and other high-impact actions.
 
-### ChatGPT project/model manager
+### GPT-5.6 Sol project/model manager
 
-ChatGPT in the browser is the strategic project/model manager.
+GPT-5.6 Sol in the browser is the normal strategic project/model manager for this workflow.
 
 It:
 
-- clarifies goals, constraints, and approval boundaries;
-- researches current external facts when needed;
-- inspects supplied files, diffs, logs, command output, and executor reports;
-- chooses the executor, exact model, and reasoning level;
-- writes a bounded, paste-ready mission prompt;
-- compares outputs and identifies missing evidence or contradictions;
-- reviews implementation reports and recommends the next step;
-- may keep work with the same executor or switch executors when the evidence warrants it.
+- clarifies goals, scope, risks, and approval boundaries;
+- chooses the repository executor and exact model;
+- writes bounded, paste-ready executor prompts;
+- reviews reports, diffs, tests, logs, and command output supplied by the executor or human operator;
+- identifies contradictions, unsupported claims, missing validation, and governance risks;
+- decides whether Claude should continue, another Claude model should take over, or Codex should receive a targeted assignment;
+- preserves continuity across execution passes.
 
 The project manager must not claim live repository knowledge unless that state is available through uploaded files, connected tools, command output, diffs, logs, or executor reports.
 
 ### Repository-aware executor
 
-Codex or Claude Code performs the live repository work.
+Claude Code or, selectively, Codex performs the live repository work.
 
-The executor:
+The executor may:
 
-- inspects the repository;
-- reads the relevant files;
-- plans within the assigned scope;
-- edits files;
-- runs commands, tests, and validation;
-- reviews its diff;
-- reports exactly what changed and what remains uncertain.
+- inspect files and repository structure;
+- plan within the assigned scope;
+- edit files;
+- run commands and tests;
+- inspect its diff;
+- correct defects;
+- report exact evidence and remaining uncertainty.
 
-Source files, runtime behavior, tests, and git evidence outrank model summaries.
+Source files, runtime behavior, tests, diffs, and git state outrank model summaries.
 
 ---
 
-## 2. ChatGPT Browser Configuration
+## 2. GPT-5.6 Sol Browser Configuration
 
-The normal browser configuration is:
+**GPT-5.6 Sol High** is the project/model manager for this workflow.
 
-- **Instant 5.5** by default.
-- Instant 5.5 may automatically switch to **GPT-5.6 Sol Medium** when the task benefits from additional reasoning.
-- The human operator may manually select **GPT-5.6 Sol High** for demanding project-management work.
+The workflow deliberately uses a strong GPT project manager because it places substantial coordination and judgment responsibility on the manager. Sol High manages:
 
-Use the configurations as follows:
+- executor and model selection;
+- assignment design;
+- evidence and diff review;
+- reconciliation between Claude and Codex findings;
+- architecture-aware coordination;
+- governance and source-of-truth-sensitive decisions;
+- follow-up routing.
 
-### Instant 5.5
-
-Use for routine coordination, executor selection, prompt writing, straightforward report review, and low-risk governance decisions.
-
-### Automatic GPT-5.6 Sol Medium
-
-Allow the default experience to escalate automatically when the task needs more reasoning but does not justify deliberate manual escalation.
-
-### GPT-5.6 Sol High
-
-Select manually for difficult architecture or workflow decisions, conflicting executor evidence, permission and governance design, source-of-truth-sensitive work, complex migrations, or high-consequence review.
-
-The project manager's browser configuration is separate from the model and reasoning configuration assigned to the repository executor.
+The project manager's browser configuration is separate from the model configuration assigned to the repository executor.
 
 ---
 
 ## 3. Default Execution Policy
 
-Use **Codex as the normal first consideration whenever live repository access is required**.
+Use **Claude Code as the normal repository-aware executor** whenever live repository work is required. The project manager chooses positively among Sonnet 5, Opus 4.8, and Fable 5 rather than treating them as a rigid escalation ladder.
 
-Start with the lightest Codex configuration likely to complete the task reliably. Escalate only when complexity, ambiguity, risk, or likely rework justifies it.
-
-Use Claude Code instead when a particular Claude model is a materially better fit.
+Use **Codex as a targeted third lane** when a bounded intervention by a different model family would add material value: independent verification, a surgical fix, a challenge to a Claude implementation or diagnosis, or a task that specifically suits Codex's tools or execution environment.
 
 The default policy is:
 
-- **ChatGPT** manages the task.
-- **Codex** performs most repository work.
-- **Claude Code** is selected for a specific Claude strength.
-- **OpenCode** is introduced only for tasks that genuinely benefit from its specialist routing model.
+- **GPT-5.6 Sol High** manages the task.
+- **Claude Code** performs repository work by default.
+- **Codex** is assigned selectively, for a concrete reason tied to the task, or as a fallback when Claude cannot complete a task reliably.
 
-There is no rigid executor hierarchy. The project manager may select a stronger configuration immediately when the task warrants it.
-
----
-
-## 4. Codex: Default Repository Executor
-
-Codex is the primary general-purpose repository-aware engineering executor.
-
-It can own a complete bounded mission, including:
-
-- repository orientation;
-- targeted file inspection;
-- implementation planning;
-- code and documentation edits;
-- command execution;
-- tests and validation;
-- diff inspection;
-- iterative fixes;
-- final reporting.
-
-Codex should not be treated only as a debugging, refactoring, or code-surgery tool.
-
-### Codex models
-
-- **GPT-5.6 Luna** — fast and economical; best for small or mechanical work.
-- **GPT-5.6 Terra** — balanced everyday engineering model.
-- **GPT-5.6 Sol** — strongest option for complex, ambiguous, or high-consequence engineering work.
-
-### Codex reasoning levels
-
-- **Low**
-- **Medium**
-- **High**
-- **Extra High**
-- **Max**
-- **Ultra**
-
-Model choice and reasoning level are separate decisions.
-
-- **Max** is the strongest single-agent reasoning level.
-- **Ultra** may delegate work to subagents and should be used only when useful decomposition or parallel investigation exists.
-
-The strongest settings should not be selected automatically.
-
-### Recommended Codex configurations
-
-| Configuration | Typical use |
-|---|---|
-| **Luna + Low** | Formatting, renames, tiny documentation edits, simple test updates, mechanical one-file changes |
-| **Luna + Medium** | Small bounded tasks requiring limited inspection or judgment |
-| **Terra + Medium** | Normal default for routine repository engineering |
-| **Terra + High** | Tricky but contained implementation |
-| **Sol + Medium** | Substantial cross-file work |
-| **Sol + High** | Difficult debugging, broad refactors, or architecture-aware implementation |
-| **Sol + Extra High** | Highly ambiguous or high-consequence work |
-| **Sol + Max** | The hardest single-agent repository tasks |
-| **Sol + Ultra** | Large, decomposable work that clearly benefits from subagents |
-
-For a typical non-trivial repository task, start by considering **Terra + Medium**.
-
-For genuinely mechanical work, prefer **Luna + Low** rather than moving the task to another executor solely because it is small.
-
-### Required Codex assignment
-
-Before giving the prompt, the project manager must tell the human operator:
-
-- the Codex surface or environment;
-- the exact model;
-- the exact reasoning level;
-- why that pairing fits;
-- the target repository or working directory;
-- commit and push permissions.
-
-Example:
-
-```text
-Executor assignment
-
-Environment: Codex IDE
-Model: GPT-5.6 Terra
-Reasoning: Medium
-Repository: <repository or working directory>
-Reason for selection: Routine bounded repository work requiring inspection, edits, tests, and diff review.
-Commit permission: Not allowed
-Push permission: Not allowed
-
-Paste the bounded mission prompt below.
-```
-
-Every Codex prompt should define:
-
-- desired outcome;
-- files or areas to inspect first;
-- source-of-truth and edit boundaries;
-- planning expectations;
-- required tests and validation;
-- dependency, permission, migration, and public-contract boundaries;
-- commit permission;
-- push restrictions;
-- final-report requirements.
-
-The final report should include:
-
-- files changed;
-- commands run;
-- validation results;
-- unresolved risks;
-- subagent use, if any;
-- commit status;
-- final concise `git status --short`.
+Avoid unnecessary handoffs, duplicate repository reading, context loss, and model changes that do not add material value.
 
 ---
 
-## 5. Claude Code: Alternate Executor
+## 4. Claude Code: Primary Repository Executor
 
-Claude Code is used when one of its available models is a better fit than Codex.
+Claude Code is the normal first consideration whenever live repository work is required.
 
 Available models:
 
@@ -223,141 +106,178 @@ Available models:
 - **Opus 4.8**
 - **Fable 5**
 
+Do not document separate Claude effort, thinking, reasoning, or budget selections; model choice is the only lever the project manager sets.
+
 ### Sonnet 5
 
-Use for normal repository inspection, implementation, testing, and iterative coding when Claude Code is preferred.
+Use as the normal default for:
+
+- routine repository inspection;
+- bounded implementation;
+- documentation and configuration work;
+- normal debugging;
+- tests and validation;
+- iterative coding;
+- clear cross-file changes.
 
 ### Opus 4.8
 
-Use for difficult implementation, complex debugging, architecture-aware work, or tasks requiring stronger sustained reasoning.
+Use when the task materially benefits from stronger sustained reasoning, including:
+
+- difficult implementation;
+- complex debugging;
+- architecture-aware refactoring;
+- broad interactions across subsystems;
+- ambiguous requirements;
+- work where a shallow implementation is likely to create rework.
+
+A task may start with Opus 4.8 immediately when its complexity clearly warrants it. It need not fail with Sonnet 5 first.
 
 ### Fable 5
 
-Use for high-level judgment, strategy, architecture critique, source-of-truth-sensitive review, or a focused second opinion.
+Use selectively for unusually demanding repository missions, including:
 
-Fable 5 should not be used for routine repository scanning or ordinary implementation when Sonnet 5, Opus 4.8, or Codex is the better fit.
+- long-horizon agentic work;
+- high-consequence architecture or implementation;
+- source-of-truth-sensitive changes;
+- complex migrations or governance changes;
+- difficult review requiring strong judgment;
+- cases where the project manager needs the strongest available Claude model.
 
-When Fable 5 is selected, the project manager must write a concise and tightly bounded prompt. Include instructions like:
+Fable prompts should remain bounded and token-conscious. Instruct it to inspect only the evidence needed, avoid unnecessary repository reading, and report material conclusions rather than restating context:
 
 ```text
 Keep this review concise and token-conscious. Do not perform unnecessary repository reading. Inspect only the files and evidence required to answer the question, avoid restating context, and report only material conclusions, risks, disagreements, and recommendations.
 ```
 
-A Fable 5 assignment should:
-
-- identify the exact judgment required;
-- provide only the necessary context;
-- limit reading to the relevant files or evidence;
-- request material conclusions rather than broad summaries;
-- avoid repeated advisory passes unless new evidence changes the question.
+Fable 5 is not the routine implementation default.
 
 ---
 
-## 6. Choosing Between Codex and Claude Code
+## 5. Codex: Targeted Third Lane
 
-Choose **Codex** when:
+Codex is not the normal first executor in this workflow. It is a deliberate alternate execution lane with a narrower role and may also be used as a fallback when Claude cannot complete a task reliably.
 
-- the task requires normal repository discovery, editing, commands, tests, and review;
-- the work is mechanical, routine, or substantial but bounded;
-- explicit model and reasoning selection is useful;
-- the task benefits from Codex Ultra subagents.
+Use it when a bounded intervention by a GPT repository executor would add material value, such as:
 
-Choose **Claude Code** when:
+- independently reproducing a bug;
+- challenging a Claude implementation or diagnosis;
+- reviewing a risky diff from a different model family;
+- performing a surgical code change;
+- generating or strengthening targeted tests;
+- checking a migration or permissions change;
+- investigating contradictory evidence;
+- resolving a narrow issue after Claude completed the broader mission;
+- completing a task that specifically suits Codex's tools or execution environment.
 
-- Sonnet 5 is the preferred direct coding executor;
-- Opus 4.8 is better suited to sustained complex reasoning;
-- Fable 5 is needed for a concise strategic or architectural judgment;
-- prior task context or continuity makes Claude Code the more effective environment.
+### Codex model and reasoning selection
 
-Choosing Claude Code over Codex should be based on a positive task-specific reason, not because Codex appears later in a list.
+- **GPT-5.6 Luna** — fast and economical; small or mechanical work.
+- **GPT-5.6 Terra** — balanced everyday engineering model.
+- **GPT-5.6 Sol** — strongest option for complex, ambiguous, or high-consequence engineering work.
+
+Pair the model with a reasoning level (Low, Medium, High, Extra High, Max, or Ultra) matched to the size and risk of the targeted task. For a typical targeted verification or surgical task, start by considering **Terra + Medium**; move to a **Sol** configuration when the task is genuinely complex or high-consequence. See [Executor Lane A — Codex](hybrid-model-workflow.md#executor-lane-a--codex) in the expanded Hybrid Model Workflow for the full model/reasoning pairing table.
 
 ---
 
-## 7. Assignment Packet
+## 6. Managed Exchange Loop
 
-For every repository task, the project manager should provide a complete assignment packet containing:
+The normal flow:
+
+1. The human operator defines the desired outcome and supplies available context.
+2. GPT-5.6 Sol identifies risks, unknowns, evidence requirements, and approval gates.
+3. GPT-5.6 Sol selects Sonnet 5, Opus 4.8, Fable 5, or targeted Codex.
+4. GPT-5.6 Sol provides a complete assignment packet and bounded mission prompt.
+5. The human operator copies the prompt into the repository-aware executor.
+6. The executor inspects, edits, validates, reviews its diff, and reports.
+7. GPT-5.6 Sol reviews the returned evidence.
+8. GPT-5.6 Sol chooses among:
+   - accepting the result for human ratification;
+   - issuing a follow-up to the same Claude model;
+   - switching to another Claude model because the task has changed;
+   - assigning Codex a specific independent or surgical task;
+   - requesting missing evidence before more editing.
+9. The human operator ratifies source-of-truth changes and controls commits and pushes.
+
+A handoff must have a concrete purpose. A downstream executor should receive:
+
+- the current objective;
+- relevant findings;
+- exact files or evidence already examined;
+- decisions already made;
+- unresolved questions;
+- what it must independently verify;
+- what it must not redo unnecessarily.
+
+---
+
+## 7. Cross-Model Review Patterns
+
+Not every task needs every model. These patterns are illustrative, not mandatory.
+
+### Normal implementation
 
 ```text
-Executor assignment
-
-Executor: <Codex or Claude Code>
-Environment: <IDE, CLI, or other surface>
-Model: <exact model>
-Reasoning level: <exact level, when available>
-Repository: <repository or working directory>
-Reason for selection: <brief task-specific rationale>
-Approval gates: <what requires human approval>
-Expected validation: <tests, commands, or checks>
-Commit permission: <allowed or not allowed>
-Push permission: <allowed or not allowed>
-
-Mission prompt
-
-<bounded, paste-ready executor prompt>
+GPT-5.6 Sol High manager
+→ Claude Code Sonnet 5 implementation
+→ GPT-5.6 Sol evidence review
+→ human ratification
 ```
 
-The prompt should make clear:
+### Difficult implementation
 
-- what success looks like;
-- what is in scope;
-- what is out of scope;
-- what evidence should be inspected first;
-- what may be edited;
-- what must not be changed without approval;
-- what validation is required;
-- what the final report must contain.
+```text
+GPT-5.6 Sol High manager
+→ Claude Code Opus 4.8 implementation
+→ GPT-5.6 Sol review
+→ focused Opus or Sonnet follow-up
+→ human ratification
+```
+
+### Independent challenge
+
+```text
+GPT-5.6 Sol High manager
+→ Claude Code implementation
+→ GPT-5.6 Sol identifies a material uncertainty
+→ Codex receives a narrow independent verification task
+→ GPT-5.6 Sol reconciles the evidence
+→ human ratification
+```
+
+### High-consequence work
+
+```text
+GPT-5.6 Sol High manager
+→ Claude Code Fable 5 bounded mission or review
+→ targeted Codex verification where useful
+→ GPT-5.6 Sol reconciles conclusions and evidence
+→ human ratification
+```
 
 ---
 
-## 8. Standard Operating Flow
-
-1. The human operator defines the goal and supplies available context.
-2. ChatGPT evaluates the task and identifies risks, unknowns, and approval boundaries.
-3. ChatGPT selects the executor, exact model, and reasoning level.
-4. ChatGPT gives the human operator a complete assignment packet and paste-ready prompt.
-5. The human operator launches the repository-aware executor.
-6. The executor inspects, edits, validates, reviews its diff, and reports.
-7. ChatGPT reviews the evidence and recommends the next step.
-8. The human operator ratifies source-of-truth changes and controls commits and pushes.
-
-ChatGPT may issue a follow-up prompt to the same executor or switch executors when the result exposes new complexity, contradictions, or risk.
-
----
-
-## 9. Governance
+## 8. Governance
 
 Always preserve these rules:
 
+- The human operator is the final ratifier.
 - Review the diff before committing.
 - Keep unrelated cleanup separate.
-- Do not change dependencies, permissions, migrations, public contracts, or source-of-truth files without the required approval.
-- Do not commit unless the assignment explicitly allows it.
-- Do not push unless the human operator explicitly instructs it.
+- Do not change dependencies, permissions, migrations, public contracts, or source-of-truth files without required approval.
+- Do not commit unless explicitly authorized.
+- Do not push unless explicitly authorized.
 - Never force-push.
-- Do not expose private paths, secrets, tokens, or machine-specific configuration in public documentation.
-- Report exactly what changed and what validation was performed.
-- Source files and runtime evidence beat acceleration maps and model summaries.
-
----
-
-## 10. Optional OpenCode Escalation
-
-OpenCode is not part of the normal core workflow.
-
-Introduce it when the task materially benefits from:
-
-- a factual Scout handoff;
-- explicit separation between discovery, implementation, debugging, and review;
-- bounded escalation to planning or architecture specialists;
-- an independent final reviewer;
-- structured multi-agent routing.
-
-When OpenCode is selected, use the dedicated OpenCode router workflow rather than duplicating its full role and model configuration here.
+- Do not amend or rewrite unrelated history.
+- Verify the branch, remote, staged files, and intended commit before pushing.
+- Public documentation must not expose private paths, secrets, tokens, or local-only configuration.
+- Executors must report exact files changed, commands run, validation results, unresolved risks, commit state, and final git status.
+- Repository evidence outranks model summaries.
 
 ---
 
 ## Short Rule
 
 ```text
-ChatGPT manages. Codex executes by default. Claude Code is selected for a specific Claude advantage. OpenCode is optional specialist escalation. The human operator ratifies what becomes part of the project.
+GPT-5.6 Sol High manages. Claude Code executes by default using Sonnet 5, Opus 4.8, or Fable 5. Codex performs targeted work or serves as a fallback when appropriate. The human operator ratifies what becomes part of the project.
 ```
