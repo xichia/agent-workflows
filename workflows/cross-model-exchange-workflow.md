@@ -1,6 +1,6 @@
 # Cross-Model Exchange Workflow for Agentic Coding
 
-This workflow defines an alternative operating model for repository work using three primary tools:
+This workflow defines an operating model for repository work using three primary tools:
 
 1. **GPT-5.6 Sol in the browser** as the strategic project/model manager.
 2. **Claude Code** as the normal repository-aware executor.
@@ -106,8 +106,6 @@ Available models:
 - **Opus 4.8**
 - **Fable 5**
 
-Claude Code uses the selected model's default effort configuration. The workflow does not treat effort selection as a separate project-manager decision.
-
 ### Sonnet 5
 
 Use as the normal default for:
@@ -156,7 +154,7 @@ Fable 5 is not the routine implementation default.
 
 ## 5. Codex: Targeted Third Lane
 
-Codex is not the normal first executor in this workflow. It is a deliberate alternate execution lane with a narrower role, not a fallback for when Claude fails.
+Codex is not the normal first executor in this workflow. It is a deliberate alternate execution lane with a narrower role or a fallback for when Claude fails.
 
 Use it when a bounded intervention by a GPT repository executor would add material value, such as:
 
@@ -169,8 +167,6 @@ Use it when a bounded intervention by a GPT repository executor would add materi
 - investigating contradictory evidence;
 - resolving a narrow issue after Claude completed the broader mission;
 - completing a task that specifically suits Codex's tools or execution environment.
-
-Codex may also be selected directly for a tightly bounded task when using Claude would add unnecessary handoff overhead.
 
 ### Codex model and reasoning selection
 
@@ -192,7 +188,7 @@ The normal flow:
 2. GPT-5.6 Sol identifies risks, unknowns, evidence requirements, and approval gates.
 3. GPT-5.6 Sol selects Sonnet 5, Opus 4.8, Fable 5, or targeted Codex.
 4. GPT-5.6 Sol provides a complete assignment packet and bounded mission prompt.
-5. The human operator launches the repository-aware executor.
+5. The human operator copies the prompt into the repository-aware executor.
 6. The executor inspects, edits, validates, reviews its diff, and reports.
 7. GPT-5.6 Sol reviews the returned evidence.
 8. GPT-5.6 Sol chooses among:
@@ -261,36 +257,7 @@ GPT-5.6 Sol High manager
 
 ---
 
-## 8. Assignment Packet
-
-For every repository task, the project manager should provide a complete assignment packet:
-
-```text
-Executor assignment
-
-Project manager: GPT-5.6 Sol High
-Executor: <Claude Code or Codex>
-Environment: <CLI, IDE, app, or other surface>
-Model/configuration: <exact selection>
-Repository: <repository or working directory>
-Reason for selection: <task-specific reason>
-Purpose of this pass: <implementation, investigation, review, or targeted verification>
-Context from previous pass: <only when applicable>
-Approval gates: <actions requiring human approval>
-Expected validation: <tests, checks, or evidence>
-Commit permission: <allowed or not allowed>
-Push permission: <allowed or not allowed>
-
-Mission prompt
-
-<bounded, paste-ready prompt>
-```
-
-Where the executor is Codex, include its exact model and reasoning level, matching the current available interface.
-
----
-
-## 9. Governance
+## 8. Governance
 
 Always preserve these rules:
 
@@ -306,17 +273,6 @@ Always preserve these rules:
 - Public documentation must not expose private paths, secrets, tokens, or local-only configuration.
 - Executors must report exact files changed, commands run, validation results, unresolved risks, commit state, and final git status.
 - Repository evidence outranks model summaries.
-
----
-
-## 10. Relationship to Existing Workflows
-
-This is an alternative operating model, not a replacement for the [Core Hybrid Model Workflow](core-hybrid-model-workflow.md).
-
-- **Core Hybrid Model Workflow** — Codex is the normal repository executor; Claude Code is selected for a specific Claude advantage.
-- **Cross-Model Exchange Workflow** — Claude Code is the normal repository executor; Codex is a targeted third lane; GPT-5.6 Sol continuously manages and reviews the exchange.
-
-Both workflows share the same governance rules and assignment-packet discipline. Choose the workflow that fits the task and the tooling available, not both at once.
 
 ---
 
