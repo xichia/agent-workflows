@@ -154,7 +154,7 @@ Fable 5 is not the routine implementation default.
 
 ## 5. Codex: Targeted Third Lane
 
-Codex is not the normal first executor in this workflow. It is a deliberate alternate execution lane with a narrower role or a fallback for when Claude fails.
+Codex is not the normal first executor in this workflow. It is a deliberate alternate execution lane with a narrower role and may also be used as a fallback when Claude cannot complete a task reliably.
 
 Use it when a bounded intervention by a GPT repository executor would add material value, such as:
 
@@ -170,13 +170,11 @@ Use it when a bounded intervention by a GPT repository executor would add materi
 
 ### Codex model and reasoning selection
 
-Use the same Codex model and reasoning guidance as the [Core Hybrid Model Workflow](core-hybrid-model-workflow.md#4-codex-default-repository-executor) to select the exact configuration for a targeted assignment:
-
 - **GPT-5.6 Luna** — fast and economical; small or mechanical work.
 - **GPT-5.6 Terra** — balanced everyday engineering model.
 - **GPT-5.6 Sol** — strongest option for complex, ambiguous, or high-consequence engineering work.
 
-Pair the model with a reasoning level (Low, Medium, High, Extra High, Max, or Ultra) matched to the size and risk of the targeted task. For a typical targeted verification or surgical task, start by considering **Terra + Medium**; move to a **Sol** configuration when the task is genuinely complex or high-consequence.
+Pair the model with a reasoning level (Light, Medium, High, Extra High, or Ultra) matched to the size and risk of the targeted task. For a typical targeted verification or surgical task, start by considering **Terra + Medium**; move to a **Sol** configuration when the task is genuinely complex or high-consequence.
 
 ---
 
